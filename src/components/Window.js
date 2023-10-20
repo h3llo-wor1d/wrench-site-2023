@@ -3,6 +3,7 @@ import Draggable from "react-draggable";
 import ReactDOM from 'react-dom/client';
 import HtmlDocument from "./sub/HtmlDocument";
 import TextDocument from "./sub/TextDocument";
+import WebAmpApplication from "./sub/WebAmpApplication";
 
 function usePrevious(value) {
     const ref = useRef();
@@ -14,13 +15,15 @@ function usePrevious(value) {
 
 const defaultSizes = [
     [300,100],
-    [700,500]
+    [700,500],
+    [700, 500]
 ]
 export default function Window(props) {
     const [body, setBody] = useState("");
     const [size, setSize] = useState(defaultSizes[props.details.type]);
-    const [, updateState] = React.useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
+    const [sn, setSN] = useState(false);
+    const [tc, setTC] = useState(0);
+    const isWinAmp = props.details.type === 2;
 
     const del = () => {
         props.onDelete()
@@ -34,7 +37,6 @@ export default function Window(props) {
     }
 
     useEffect(() => {
-        console.log(props.details.type)
         switch(props.details.type) {
             case 1:
                 setBody(<HtmlDocument src={props.details.content.src} width={"calc(100% - 10px)"} height={"calc(100% - 25px)"} />);
@@ -47,15 +49,33 @@ export default function Window(props) {
         }
     }, [])
 
+    const addToTitleCounter = () => {
+        if (tc === 1) {
+            setTC(0);
+            max();
+            return;
+        }
+        setTC(tc+1);
+    }
+
     const max = () => {
-        setSize([800, 500]);
+        switch (sn) {
+            case false:
+                setSize(["100%", "100%"]);
+                break;
+            default:
+                setSize(defaultSizes[props.details.type]);
+                break;
+        }
+        setSN(!sn); 
     }
 
     return (
-        <Draggable handle="strong" cancel="bin">
+        isWinAmp ? <WebAmpApplication /> :
+        <Draggable handle="strong" cancel="bin" bounds={"body"} onDrag={() => setTC(0)}>
             <div style={{ width: size[0], height: size[1], resize: "both", overflow: "hidden"}} className="window">
                 <strong>
-                    <div className="title-bar pointerOnHover">
+                    <div className="title-bar pointerOnHover" onClick={addToTitleCounter}>
                         <div className="title-bar-text noselect">{props.details.name}</div>
                         <bin className="title-bar-controls">
                             <button aria-label="Minimize" />

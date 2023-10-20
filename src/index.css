@@ -41,3 +41,12 @@ bin:hover {
   row-gap: 20px;
 }
 
+.txSelected {
+  background-color: navy;
+  border-color: #fff;
+}
+
+.imSelected {
+  filter: brightness(.35) sepia() hue-rotate(148deg) saturate(10);
+  image-rendering: pixelated;
+}
