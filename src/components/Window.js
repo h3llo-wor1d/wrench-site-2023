@@ -1,29 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
-import ReactDOM from 'react-dom/client';
 import HtmlDocument from "./sub/HtmlDocument";
 import TextDocument from "./sub/TextDocument";
-import WebAmpApplication from "./sub/WebAmpApplication";
-
-function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-}
+import SpecialApplication from "./sub/SpecialApplication";
+import MineSweeper from "./apps/Minesweeper";
+import MinesweeperView from "./apps/Minesweeper/MinesweeperView";
 
 const defaultSizes = [
     [300,100],
     [700,500],
-    [700, 500]
+    [700, 500],
+    [233, 343.8]
+]
+const specialApplications = [
+    2
 ]
 export default function Window(props) {
     const [body, setBody] = useState("");
-    const [size, setSize] = useState(defaultSizes[props.details.type]);
+    const [size, setSize] = useState(props.details.settings.defaultSize ? props.details.settings.defaultSize : defaultSizes[props.details.type]);
     const [sn, setSN] = useState(false);
     const [tc, setTC] = useState(0);
-    const isWinAmp = props.details.type === 2;
+    const isSpecial = specialApplications.indexOf(props.details.type) !== -1;
 
     const del = () => {
         props.onDelete()
@@ -34,6 +31,7 @@ export default function Window(props) {
         window.windows = nWindowWindows;
         
         props.setState(nWindows);
+        
     }
 
     useEffect(() => {
@@ -42,7 +40,10 @@ export default function Window(props) {
                 setBody(<HtmlDocument src={props.details.content.src} width={"calc(100% - 10px)"} height={"calc(100% - 25px)"} />);
                 break;
             case 0:
-                setBody(<TextDocument text={props.details.content.text} />);
+                setBody(<TextDocument innerHTML={props.details.content.innerHTML} />);
+                break;
+            case 3:
+                setBody(<MineSweeper />);
                 break;
             default:
                 break;
@@ -59,21 +60,23 @@ export default function Window(props) {
     }
 
     const max = () => {
-        switch (sn) {
-            case false:
-                setSize(["100%", "100%"]);
-                break;
-            default:
-                setSize(defaultSizes[props.details.type]);
-                break;
+        if (props.details.settings.resizable) {
+            switch (sn) {
+                case false:
+                    setSize(["100%", "100%"]);
+                    break;
+                default:
+                    setSize(defaultSizes[props.details.type]);
+                    break;
+            }
+            setSN(!sn); 
         }
-        setSN(!sn); 
     }
 
     return (
-        isWinAmp ? <WebAmpApplication /> :
+        isSpecial ? <SpecialApplication onClose={del} details={props.details} /> :
         <Draggable handle="strong" cancel="bin" bounds={"body"} onDrag={() => setTC(0)}>
-            <div style={{ width: size[0], height: size[1], resize: "both", overflow: "hidden"}} className="window">
+            <div style={{ width: size[0], height: size[1], resize: props.details.settings.resizable && "both", overflow: "hidden"}} className="window">
                 <strong>
                     <div className="title-bar pointerOnHover" onClick={addToTitleCounter}>
                         <div className="title-bar-text noselect">{props.details.name}</div>

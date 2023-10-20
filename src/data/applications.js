@@ -5,22 +5,59 @@ export const Applications = [
         type: 1,
         content: {
             src: "https://wrench.gay"
+        },
+        settings: {
+            defaultSize: false,
+            autoStart: true,
+            randomPos: false,
+            resizable: true
         }
     },
     {
-        name: "helloworld.txt",
+        name: "Commission Price Sheet.txt",
         icon: "text",
         type: 0,
         content: {
-            text: "Hello world!\nYippee!!!"
+            innerHTML: `
+<span style="font-size: 20pt; font-weight: bold;">Commission Price Sheet</span>
+<b>
+    <rainbow>testing!</rainbow>
+</b>
+`
+        },
+        settings: {
+            defaultSize: [700,400],
+            autoStart: false,
+            randomPos: false,
+            resizable: true
         }
     },
     {
         name: "Webamp",
         icon: "winamp2",
+        autoStart: true,
         type: 2,
+        defaultSize: false,
         content: {
             foo: "bar"
+        },
+        settings: {
+            defaultSize: false,
+            autoStart: true,
+            randomPos: true,
+            resizable: false
+        }
+    },
+    {
+        name: "Minesweeper",
+        icon: "sweeper",
+        autoStart: true,
+        type: 3,
+        settings: {
+            defaultSize: [233, 302],
+            autoStart: true,
+            randomPos: true,
+            resizable: false
         }
     }
 ]
@@ -29,5 +66,6 @@ export const Applications = [
     Types
     0: text document
     1: html document
-    -1: webamp
+    2: webamp
+    3: minesweeper
 */

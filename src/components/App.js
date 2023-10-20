@@ -36,41 +36,49 @@ export default function App(props) {
     const handleDelete = () => {
       setShouldRun(true)
     }
+
+    useEffect(() => {
+      if (props.details.settings.autoStart) {
+          setShouldRun(false);
+          let pre=window.openWindows;
+          window.windows = [...window.windows, props.details.name]
+          window.openWindows = [
+            ...window.openWindows,
+            <Window 
+              del={props.createWindow} 
+              onDelete={handleDelete} 
+              preState={pre} 
+              setState={props.set} 
+              details={props.details}
+            />
+          ]
+          props.set(window.openWindows);
+      }
+    }, [])
     
     const handle = () => {
         if (counter === 1) {
-          // run app
           resetCounter();
           if (shouldRun) {
-            console.log('fuck!');
-            try {
-              setShouldRun(false);
-              let pre=window.openWindows;
-              window.windows = [...window.windows, props.details.name]
-              console.log('...')
-              window.openWindows = [
-                ...window.openWindows,
-                <Window 
-                  del={props.createWindow} 
-                  onDelete={handleDelete} 
-                  preState={pre} 
-                  setState={props.set} 
-                  details={props.details}
-                />
-              ]
-              
-              
-              props.set(window.openWindows);
-              console.log(window.openWindows)
-            } catch (err) {
-              console.log(err)
-            }
-            
+            setShouldRun(false);
+            let pre=window.openWindows;
+            window.windows = [...window.windows, props.details.name]
+            window.openWindows = [
+              ...window.openWindows,
+              <Window 
+                del={props.createWindow} 
+                onDelete={handleDelete} 
+                preState={pre} 
+                setState={props.set} 
+                details={props.details}
+              />
+            ]
+
+            props.set(window.openWindows);
           }
           return;
         };
         setCounter(counter+1);
-        console.log(counter)
         icon.current.className="imSelected"
         text.current.className="txSelected"
         
