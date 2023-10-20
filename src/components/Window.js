@@ -37,7 +37,7 @@ export default function Window(props) {
         console.log(props.details.type)
         switch(props.details.type) {
             case 1:
-                setBody(<HtmlDocument src={props.details.content.src} width={"calc(100% - 5px)"} height={475} />);
+                setBody(<HtmlDocument src={props.details.content.src} width={"calc(100% - 10px)"} height={"calc(100% - 25px)"} />);
                 break;
             case 0:
                 setBody(<TextDocument text={props.details.content.text} />);
@@ -53,10 +53,10 @@ export default function Window(props) {
 
     return (
         <Draggable handle="strong" cancel="bin">
-            <div style={{ minWidth: size[0], width: size[0], minHeight:size[1], height: size[1]}} className="window">
+            <div style={{ width: size[0], height: size[1], resize: "both", overflow: "hidden"}} className="window">
                 <strong>
                     <div className="title-bar pointerOnHover">
-                        <div className="title-bar-text">{props.details.name}</div>
+                        <div className="title-bar-text noselect">{props.details.name}</div>
                         <bin className="title-bar-controls">
                             <button aria-label="Minimize" />
                             <button aria-label="Maximize" onClick={max} />
