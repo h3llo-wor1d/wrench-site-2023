@@ -1,7 +1,6 @@
 import { useState } from "react";
 import React, { useRef, useEffect } from "react";
 import Window from "./Window";
-import Draggable from "react-draggable";
 
 function useOutsideAlerter(ref, reset) {
     useEffect(() => {

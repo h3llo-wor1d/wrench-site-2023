@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
-import HtmlDocument from "./sub/HtmlDocument";
-import TextDocument from "./sub/TextDocument";
-import SpecialApplication from "./sub/SpecialApplication";
-import MineSweeper from "./apps/Minesweeper";
-import MinesweeperView from "./apps/Minesweeper/MinesweeperView";
+import HtmlDocument from "../sub/HtmlDocument";
+import TextDocument from "../sub/TextDocument";
+import SpecialApplication from "../sub/SpecialApplication";
+import MineSweeper from "../apps/Minesweeper";
+import MinesweeperView from "../apps/Minesweeper/MinesweeperView";
 
 const defaultSizes = [
     [300,100],
@@ -20,6 +20,7 @@ export default function Window(props) {
     const [size, setSize] = useState(props.details.settings.defaultSize ? props.details.settings.defaultSize : defaultSizes[props.details.type]);
     const [sn, setSN] = useState(false);
     const [tc, setTC] = useState(0);
+    const [pos, setPos] = useState({x: 0, y: 0});
     const isSpecial = specialApplications.indexOf(props.details.type) !== -1;
 
     const del = () => {
@@ -30,6 +31,7 @@ export default function Window(props) {
         window.openWindows = nWindows;
         window.windows = nWindowWindows;
         
+        //props.ref.removeChild(props.ref.current.children(props.id))
         props.setState(nWindows);
         
     }
@@ -63,19 +65,32 @@ export default function Window(props) {
         if (props.details.settings.resizable) {
             switch (sn) {
                 case false:
+                    setPos({x: 0, y: 0});
                     setSize(["100%", "100%"]);
                     break;
                 default:
-                    setSize(defaultSizes[props.details.type]);
+                    setSize(
+                        props.details.settings.defaultSize ? 
+                        props.details.settings.defaultSize : 
+                        defaultSizes[props.details.type]
+                    );
                     break;
             }
             setSN(!sn); 
         }
     }
 
+    const handleStop = (e, dragE) => {
+        setPos({x: dragE.x, y: dragE.y})
+    }
+
+    const focus = e => {
+        return;
+    }
+
     return (
         isSpecial ? <SpecialApplication onClose={del} details={props.details} /> :
-        <Draggable handle="strong" cancel="bin" bounds={"body"} onDrag={() => setTC(0)}>
+        <Draggable handle="strong" cancel="bin" bounds={"body"} onDrag={() => setTC(0)} position={pos} onStop={handleStop} onClick={focus}>
             <div style={{ width: size[0], height: size[1], resize: props.details.settings.resizable && "both", overflow: "hidden"}} className="window">
                 <strong>
                     <div className="title-bar pointerOnHover" onClick={addToTitleCounter}>

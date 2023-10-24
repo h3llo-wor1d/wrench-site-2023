@@ -1,11 +1,13 @@
-import { Component, useEffect, useState } from "react";
-import App from "../components/App";
-import Window from "../components/Window";
+import { Component, useEffect, useRef, useState } from "react";
+import App from "../components/ui/App";
+import Window from "../components/ui/Window";
 import { Applications } from '../data/applications';
+import Taskbar from "../components/ui/Taskbar";
 
 export default function Home(props) {
     const [windows, setWindows] = useState([]);
     const [apps, setApps] = useState([]);
+    const windowRef = useRef(null);
 
     const getWindows = () => {
         return windows;
@@ -22,6 +24,7 @@ export default function Home(props) {
                 getCur={getWindows}
                 set={setWindows}
                 details={app}
+                ref={windowRef}
             />
         });
         setApps(appList)
@@ -32,9 +35,10 @@ export default function Home(props) {
             <div style={{height: "100vh", width: "100vw", position: "fixed", marginLeft: "10px", display: "flex", flexDirection: "row", rowGap: "20px", columnGap: "20px"}}>
                 {apps}
             </div> 
-            <div style={{height: "100vh", width: "100vw"}}>
+            <div style={{height: "100vh", width: "100vw"}} ref={windowRef} id="windows">
                 {windows} 
-            </div>                 
+            </div>
+            <Taskbar />                 
         </div>
     )
     

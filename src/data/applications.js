@@ -8,7 +8,7 @@ export const Applications = [
         },
         settings: {
             defaultSize: false,
-            autoStart: true,
+            autoStart: false,
             randomPos: false,
             resizable: true
         }
@@ -55,7 +55,7 @@ export const Applications = [
         type: 3,
         settings: {
             defaultSize: [233, 302],
-            autoStart: true,
+            autoStart: false,
             randomPos: true,
             resizable: false
         }
