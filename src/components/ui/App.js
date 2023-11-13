@@ -1,5 +1,6 @@
 import { useState } from "react";
 import React, { useRef, useEffect } from "react";
+import { ReactDOM } from "react";
 import Window from "./Window";
 
 function useOutsideAlerter(ref, reset) {
@@ -14,7 +15,7 @@ function useOutsideAlerter(ref, reset) {
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref, reset]);
-  }
+}
 
   
 export default function App(props) {
@@ -43,13 +44,14 @@ export default function App(props) {
           window.windows = [...window.windows, props.details.name]
           window.openWindows = [
             ...window.openWindows,
-            <Window 
-              del={props.createWindow} 
-              onDelete={handleDelete} 
-              preState={pre} 
-              setState={props.set} 
-              details={props.details}
-            />
+            <div id={props.details.name}>
+              <Window 
+                onDelete={handleDelete} 
+                preState={pre} 
+                setState={props.set} 
+                details={props.details}
+              />
+            </div>
           ]
           props.set(window.openWindows);
       }
@@ -64,15 +66,15 @@ export default function App(props) {
             window.windows = [...window.windows, props.details.name]
             window.openWindows = [
               ...window.openWindows,
-              <Window 
-                del={props.createWindow} 
-                onDelete={handleDelete} 
-                preState={pre} 
-                setState={props.set} 
-                details={props.details}
-              />
+              <div id={props.details.name}>
+                <Window 
+                  onDelete={handleDelete} 
+                  preState={pre} 
+                  setState={props.set} 
+                  details={props.details}
+                />
+              </div>
             ]
-
             props.set(window.openWindows);
           }
           return;

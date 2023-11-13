@@ -4,6 +4,7 @@ import "98.css";
 import "./index.css";
 import Home from './pages/home';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Test from './pages/test';
 
 
 const router = createBrowserRouter([

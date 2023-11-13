@@ -5,6 +5,7 @@ import TextDocument from "../sub/TextDocument";
 import SpecialApplication from "../sub/SpecialApplication";
 import MineSweeper from "../apps/Minesweeper";
 import MinesweeperView from "../apps/Minesweeper/MinesweeperView";
+import WebApp from "../sub/WebApp";
 
 const defaultSizes = [
     [300,100],
@@ -23,19 +24,6 @@ export default function Window(props) {
     const [pos, setPos] = useState({x: 0, y: 0});
     const isSpecial = specialApplications.indexOf(props.details.type) !== -1;
 
-    const del = () => {
-        props.onDelete()
-        let curIndex = window.windows.indexOf(props.details.name);
-        let nWindows = window.openWindows.filter(k => k !== window.openWindows[curIndex]);
-        let nWindowWindows = window.windows.filter(k => k !== props.details.name);
-        window.openWindows = nWindows;
-        window.windows = nWindowWindows;
-        
-        //props.ref.removeChild(props.ref.current.children(props.id))
-        props.setState(nWindows);
-        
-    }
-
     useEffect(() => {
         switch(props.details.type) {
             case 1:
@@ -46,6 +34,9 @@ export default function Window(props) {
                 break;
             case 3:
                 setBody(<MineSweeper />);
+                break;
+            case 4:
+                setBody(<WebApp mapUrl={props.details.content.mapUrl}/>);
                 break;
             default:
                 break;
@@ -89,7 +80,10 @@ export default function Window(props) {
     }
 
     return (
-        isSpecial ? <SpecialApplication onClose={del} details={props.details} /> :
+        isSpecial ? <SpecialApplication details={props.details} onClose={() => {
+            props.onDelete();
+            
+        }} /> :
         <Draggable handle="strong" cancel="bin" bounds={"body"} onDrag={() => setTC(0)} position={pos} onStop={handleStop} onClick={focus}>
             <div style={{ width: size[0], height: size[1], resize: props.details.settings.resizable && "both", overflow: "hidden"}} className="window">
                 <strong>
@@ -98,7 +92,13 @@ export default function Window(props) {
                         <bin className="title-bar-controls">
                             <button aria-label="Minimize" />
                             <button aria-label="Maximize" onClick={max} />
-                            <button aria-label="Close" onClick={del} />
+                            <button aria-label="Close" onClick={() => {
+                                props.onDelete();
+                                document.dispatchEvent(new CustomEvent("win98Closed", {
+                                    detail: props.details.name
+                                }))
+                                
+                            }} />
                         </bin>
                     </div>
                 </strong>

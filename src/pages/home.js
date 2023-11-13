@@ -14,6 +14,11 @@ export default function Home(props) {
     }
 
     useEffect(() => {
+        document.addEventListener("win98Closed", e => {
+            console.log(e.detail)
+            document.getElementById(e.detail).remove()
+        })
+
         window.windows = [];
         window.openWindows=[];
         let appList = Applications.map(app => {
@@ -32,7 +37,9 @@ export default function Home(props) {
 
     return (
         <div>
-            <div style={{height: "100vh", width: "100vw", position: "fixed", marginLeft: "10px", display: "flex", flexDirection: "row", rowGap: "20px", columnGap: "20px"}}>
+            <div 
+            id="apps"
+            style={{height: "100vh", width: "100vw", position: "fixed", marginLeft: "10px", display: "flex", flexDirection: "row", rowGap: "20px", columnGap: "20px"}}>
                 {apps}
             </div> 
             <div style={{height: "100vh", width: "100vw"}} ref={windowRef} id="windows">

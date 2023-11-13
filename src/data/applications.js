@@ -33,6 +33,20 @@ export const Applications = [
         }
     },
     {
+        name: "Project Muse.lnk",
+        icon: "muse94",
+        type: 4,
+        content: {
+            mapUrl: "htmlfiles.projectmuse"
+        },
+        settings: {
+            defaultSize: [700,400],
+            autoStart: false,
+            randomPos: false,
+            resizable: true
+        }
+    },
+    {
         name: "Webamp",
         icon: "winamp2",
         autoStart: true,
@@ -68,4 +82,5 @@ export const Applications = [
     1: html document
     2: webamp
     3: minesweeper
+    4: web
 */
