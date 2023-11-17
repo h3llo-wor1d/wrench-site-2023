@@ -19,8 +19,23 @@ export default function Home(props) {
             document.getElementById(e.detail).remove()
         })
 
+        document.addEventListener("testEvent", e => {
+            if (Object.keys(window.dropdowns).indexOf(e.detail) === -1) {
+                window.dropdowns[e.detail] = false;
+            }
+            window.dropdowns[e.detail] = !window.dropdowns[e.detail];
+            document.getElementById(`uiarrow-${e.detail}`).style.transform = window.dropdowns[e.detail] ? "rotate(270deg) translateY(-50%)" : "translateY(-50%)";
+            console.log(`uiarrow-${e.detail}`)
+            document.getElementById(e.detail).style.height = window.dropdowns[e.detail] ? "fit-content" : "0";
+            document.getElementById(e.detail).style.display = window.dropdowns[e.detail] ? "block" : "none";
+        })
+
+        window.testevent = () => {
+            document.dispatchEvent(new CustomEvent('testEvent', {detail: 'testing!'}));
+        }
         window.windows = [];
         window.openWindows=[];
+        window.dropdowns = {};
         let appList = Applications.map(app => {
             return <App 
                 name={app.name} 

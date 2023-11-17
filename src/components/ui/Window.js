@@ -30,7 +30,7 @@ export default function Window(props) {
                 setBody(<HtmlDocument src={props.details.content.src} width={"calc(100% - 10px)"} height={"calc(100% - 25px)"} />);
                 break;
             case 0:
-                setBody(<TextDocument innerHTML={props.details.content.innerHTML} />);
+                setBody(<TextDocument innerHTML={props.details.content.innerHTML} style={{overflowY: "auto"}} />);
                 break;
             case 3:
                 setBody(<MineSweeper />);
